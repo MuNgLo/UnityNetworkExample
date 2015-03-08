@@ -1,4 +1,7 @@
-# UnityNetworkExample
+# UnityNetworkExample v 1.1
+
+Updated for Unity 5. Should still work in older version with very little changes. Mostly the togglecursor script and materials spring to mind as changed for Unity 5.
+
 A stripped down example of working multiplayer with Unity.Network
 
 As simple as it gets with a very commented code. It should prove useful for most that want to get started with Unity.Network or just check the basics.

@@ -11,9 +11,8 @@ public class NetSync : MonoBehaviour {
 				}
 		}
 	void OnEnable() {
-				if (networkView.isMine) {
+				if (GetComponent<NetworkView>().isMine) {
 						owner = int.Parse(Network.player.ToString ());
-						transform.parent.gameObject.GetComponent<ToggleCursor> ().enabled = true;
 						transform.parent.gameObject.GetComponent<CharacterController> ().enabled = true;
 						transform.parent.gameObject.GetComponent<CharacterMotor> ().enabled = true;
 						transform.parent.gameObject.GetComponent<FPSInputController> ().enabled = true;
@@ -27,7 +26,7 @@ public class NetSync : MonoBehaviour {
 		}
 	void Awake() {
 				transform.parent.SetParent (GameObject.Find ("_PLAYERS").transform);
-				if (networkView.isMine) {
+				if (GetComponent<NetworkView>().isMine) {
 								GameObject.Find ("_GAMECORE").GetComponent<Game> ().currentPlayerAvatar = this.transform.parent.gameObject;
 						}
 		}

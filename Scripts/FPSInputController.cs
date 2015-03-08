@@ -30,8 +30,8 @@ public class FPSInputController : MonoBehaviour
 	void Update()
 	{
 		if(!Network.isClient && !Network.isServer) { return; }
-		if(!networkView.isMine) { return; }
-		if(Screen.showCursor) { 
+		if(!GetComponent<NetworkView>().isMine) { return; }
+		if(Cursor.visible) { 
 			motor.inputMoveDirection = Vector3.zero; // Zero out the inputvector if the cursor is not hidden
 			return;
 		}

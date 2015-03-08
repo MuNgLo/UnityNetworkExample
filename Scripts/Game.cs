@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Game : MonoBehaviour
 {
 	#region Game variables
-		private string gameKey = "UNE-UnityNetworkExample-v1.0"; // this is what identifies the game on the masterserver. Asking it for servers with this key returns all servers for this game.
+		private string gameKey = "UNE-UnityNetworkExample-v1.1"; // this is what identifies the game on the masterserver. Asking it for servers with this key returns all servers for this game.
 		public string hostName = "UNE-000"; // The servername used when registering on the masterserver
 		public string hostComment = "Unity Network example server"; // Server comment that is sent to masterserver when registering the server.
 		public int hostPort = 27030; // Which port the server you host will run on. This is the port needed to be NATed(forwarded) for maximum connectability. This should be possible to set for the game. It makes it easier to host for those that have some ports already NATed.
@@ -73,11 +73,11 @@ public class Game : MonoBehaviour
 						SpawnIntoGame (player);
 				}
 				if (!Network.isServer) { // If Spawn() wasn't called on server we relay the request to the server
-						networkView.RPC ("Spawn", RPCMode.Server, player);
+						GetComponent<NetworkView>().RPC ("Spawn", RPCMode.Server, player);
 						return;
 				}
 				if (player.ToString () != "0") { // Make sure we only call doSpawn over RPC if it isn't the server that is spawning
-						networkView.RPC ("doSpawn", player); // We only send the doSpawn RPC to the player that is going to spawn
+						GetComponent<NetworkView>().RPC ("doSpawn", player); // We only send the doSpawn RPC to the player that is going to spawn
 				} else {
 						doSpawn ();
 				}
