@@ -14,3 +14,7 @@ It isn't perfect but it is a good start for those that prefer learning by readin
 
 Getting Started: Setup a new project and add all the files to the Asset folder. After that you should be able to load the default scene and build the game and start testing.
 You might want to up the network updaterate to 30 or more. Otherwise it will look very choppy due to lack of interpolation. You find it under Edit>Project Settings>Network>Sendrate.
+
+How it should look like
+
+[![YouTube Thumnail and link](http://img.youtube.com/vi/suD5dxWFv2A/0.jpg)](http://www.youtube.com/watch?v=suD5dxWFv2A)
