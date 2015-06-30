@@ -1,4 +1,4 @@
-# UnityNetworkExample v 1.1
+# UnityNetworkExample v 1.2
 
 Updated for Unity 5. Should still work in older version with very little changes. Mostly the togglecursor script and materials spring to mind as changed for Unity 5.
 
@@ -7,6 +7,8 @@ A stripped down example of working multiplayer with Unity.Network
 As simple as it gets with a very commented code. It should prove useful for most that want to get started with Unity.Network or just check the basics.
 
 It focuses on server/client connectability mostly but it does have spawnfunctions and a playeravatar you can run around with.
+
+With 1.2 there is also a simple chat system using RPC. A single RPC is used for it and comments in the code about it.
 
 There is no interpolation though so running it on default 15 network updates will look awful. But it works.
 
