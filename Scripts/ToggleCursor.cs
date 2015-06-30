@@ -30,4 +30,18 @@ public class ToggleCursor : MonoBehaviour
 		EventSystem.current.SetSelectedGameObject (null, null); // This removes the focus from the Spawn button so we don't trigger it when we press space.
 		}
 	}
+
+	public void SetCursor(bool state)
+	{
+		if (showCursor != state) {
+			toggleCursor ();
+		}
+	}
+	
+	public void ShowCursor()
+	{
+		if (showCursor == false) {
+			toggleCursor ();
+		}
+	}
 }

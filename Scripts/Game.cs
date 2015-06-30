@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Game : MonoBehaviour
 {
 	#region Game variables
-		private string gameKey = "UNE-UnityNetworkExample-v1.1"; // this is what identifies the game on the masterserver. Asking it for servers with this key returns all servers for this game.
+		private string gameKey = "UNE-UnityNetworkExample-v1.2"; // this is what identifies the game on the masterserver. Asking it for servers with this key returns all servers for this game.
 		public string hostName = "UNE-000"; // The servername used when registering on the masterserver
 		public string hostComment = "Unity Network example server"; // Server comment that is sent to masterserver when registering the server.
 		public int hostPort = 27030; // Which port the server you host will run on. This is the port needed to be NATed(forwarded) for maximum connectability. This should be possible to set for the game. It makes it easier to host for those that have some ports already NATed.
@@ -19,6 +19,7 @@ public class Game : MonoBehaviour
 		public int natFacilitatorPort = 0;
 		public GameObject spawnLocation; // An object that indicates where players will spawn.
 		public GameObject playerAvatarPrefab; // the prefab that players will spawn as.
+		public GameObject chatChannel; // The prefab for the chatChannel
 		//[HideInInspector] // Hides the variable on the next line from the editor inspector. TODO Hide this again
 		public GameObject currentPlayerAvatar; // Saves a reference to the playeravatar the player is using.
 		public UIAPI ui; // Should be setup in the editor to the gameobject containing the UIAPI script. It is my way of decopeling UI from the rest of the code. Should be no problems using any UI solution through the UIAPI.
@@ -34,7 +35,10 @@ public class Game : MonoBehaviour
 				Application.targetFrameRate = maxFPS; // This tells the game what FPS to render at. If vsync is enabled it will be ignored.
 		if (playerAvatarPrefab == null) { // checks if playerAvatar is not set in Editor and if so loads the default one.
 			playerAvatarPrefab = (GameObject)Resources.Load ("PlayerAvatar");
-				}
+		}
+		if (chatChannel == null) { // checks if chatChannel is not set in Editor and if so loads the default one.
+			chatChannel = (GameObject)Resources.Load ("ChattChannel");
+		}
 				#region Masterserver settings
 				// This is what you use to point the game to your own masterserver.
 				// The masterserver software is available through Unity somewhere. Google away!! :D
@@ -142,6 +146,8 @@ public class Game : MonoBehaviour
 						GameObject.Find ("UI").transform.FindChild ("ConnectedMenu").FindChild ("ServerNameLabel").GetComponent<Text> ().text = "Server: " + hostName;
 				}
 				MasterServer.RegisterHost (gameKey, hostName, hostComment); // Register our server on the masterserver so other can find us and connect
+
+				Network.Instantiate (chatChannel, Vector3.zero, transform.rotation, 0); // Spawn a buffered object on network to relay any chat messages
 		}
 		/// <summary>
 		/// Called on the server whenever a new player has successfully connected.
@@ -202,5 +208,44 @@ public class Game : MonoBehaviour
 				Application.Quit ();
 		}
 	#endregion
-	
+
+	#region Chat Related stuff
+	/// <summary>
+	/// Send the chat message over the network
+	/// </summary>
+	/// <param name="param">message</param>
+	public void say(string param)
+	{
+		if (!Network.isClient && !Network.isServer) {
+			Debug.Log ("No connection to say anything to.");
+		}
+		if (!GameObject.Find ("ChattChannel")) {
+			Debug.Log ("Serverchat channel wasn't found.");
+		}
+		// After we checked we have a server connection and a chatchannel to send to we call an unbuffered RPC to all on the network. Including server and clients and us self. (RPCMode.All does that)
+		// We send our Network ID + message
+		// Read the notes on the RPC say in ChattChannel.cs for more
+		GameObject.Find ("ChattChannel").GetComponent<ChattChannel> ().GetComponent<NetworkView> ().RPC ("say", RPCMode.All, ColorWrapName(Network.player.ToString ()) + ": " + param);
+	}
+	public void tell(string param)
+	{
+		if (!Network.isClient && !Network.isServer) {
+			Debug.Log ("No connection to tell anything to.");
+		}
+		if (!GameObject.Find ("ChattChannel")) {
+			Debug.Log ("Serverchat channel wasn't found.");
+		}
+		GameObject.Find ("ChattChannel").GetComponent<ChattChannel> ().GetComponent<NetworkView> ().RPC ("say", RPCMode.All, param);
+	}
+	public string getLastChatt(int rows=5)
+	{
+		if ((!Network.isClient && !Network.isServer) | !GameObject.Find ("ChattChannel")) {
+			return string.Empty;
+		}
+		return GameObject.Find ("ChattChannel").GetComponent<ChattChannel> ().getLastChatt ();
+	}
+	private string ColorWrapName(string pName) {
+		return "<color=\"blue\">"+pName+"</color>";
+	}
+	#endregion
 }
