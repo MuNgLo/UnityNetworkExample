@@ -1,6 +1,6 @@
 # UnityNetworkExample v 1.2
 
-Updated for Unity 5. Should still work in older version with very little changes. Mostly the togglecursor script and materials spring to mind as changed for Unity 5.
+Updated for Unity 5(Still using old Unity.Network not UNET). Should still work in older version with very little changes. Mostly the togglecursor script and materials spring to mind as changed for Unity 5. don't expect it to work for ever. Sooner or later Unity 5+ will break compatability with this code.
 
 A stripped down example of working multiplayer with Unity.Network
 
